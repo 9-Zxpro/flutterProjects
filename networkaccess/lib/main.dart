@@ -1,11 +1,18 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<Album> fetchAlbum() async {
-  final response  = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+  final response  = await http
+    .get(
+      Uri.parse('https://jsonplaceholder.typicode.com/albums/1'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'basic API_token_here',
+      }
+    );
   if(response.statusCode == 200) {
     return Album.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
   } else {
